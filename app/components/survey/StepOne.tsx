@@ -1,47 +1,71 @@
 "use client";
 
-import { useState } from "react";
-import { User, ClipboardList, Shield } from "lucide-react";
-import OptionCard from "./OptionCard";
+import { useEffect, useState } from "react";
+import { ClipboardList, Shield, Users, User } from "lucide-react";
+import QuestionStep, { QuestionOption } from "./QuestionStep";
+
+type RoleType = "player" | "organizer" | "both";
 
 type StepOneProps = {
-    selectedRole: string;
-    onSelect: (role: string) => void;
-}
+  selectedRole?: RoleType | "";
+  onNext: (role: RoleType) => void;
+};
 
-export default function StepOne(
-    {
-    selectedRole,
-    onSelect
-}: StepOneProps) {
+const roleOptions: QuestionOption[] = [
+  {
+    id: "player",
+    title: "Jugador",
+    description: "Disfruto participar en partidas organizadas por otros jugadores.",
+    value: "player",
+    icon: User,
+  },
+  {
+    id: "organizer",
+    title: "Organizador de partidas",
+    description: "Me encargo de organizar partidas y coordinar a los participantes.",
+    value: "organizer",
+    icon: Shield,
+  },
+  {
+    id: "both",
+    title: "Ambos",
+    description: "Además de jugar, también organizo eventos para la comunidad.",
+    value: "both",
+    icon: Users,
+  },
+];
+
+export default function StepOne({ selectedRole, onNext }: StepOneProps) {
+  const [selected, setSelected] = useState<RoleType | "">(selectedRole ?? "");
+
+  useEffect(() => {
+    if (selectedRole) {
+      setSelected(selectedRole);
+    }
+  }, [selectedRole]);
+
+  const handleSelect = (value: string) => {
+    setSelected(value as RoleType);
+  };
+
+  const handleNext = () => {
+    if (selected) {
+      onNext(selected);
+    }
+  };
 
   return (
-    <div className="space-y-6">
-
-      <OptionCard
-        title="Jugador"
-        description="Participo en partidas y busco eventos y equipos."
-        icon={User}
-        selected={selectedRole === "player"}
-        onClick={() => onSelect("player")}
-      />
-
-      <OptionCard
-        title="Organizador"
-        description="Organizo partidas y administro jugadores."
-        icon={ClipboardList}
-        selected={selectedRole === "organizer"}
-        onClick={() => onSelect("organizer")}
-      />
-
-      <OptionCard
-        title="Ambos"
-        description="Juego y además organizo eventos."
-        icon={Shield}
-        selected={selectedRole === "both"}
-        onClick={() => onSelect("both")}
-      />
-
-    </div>
+    <QuestionStep
+      step={1}
+      totalSteps={6}
+      title="¿Cómo participas normalmente en el Airsoft?"
+      subtitle="Empecemos por conocerte un poco mejor."
+      estimatedTime="2 minutos"
+      options={roleOptions}
+      selectedValue={selected}
+      showBack={false}
+      onSelect={handleSelect}
+      onNext={handleNext}
+    />
   );
 }

@@ -1,0 +1,125 @@
+*** Begin Patch
+*** Update File: app/components/survey/OptionCard.tsx
+@@
+-import { LucideIcon } from "lucide-react";
+-
+-type OptionCardProps = {
+-  title: string;
+-  description: string;
+-  icon: LucideIcon;
+-  selected: boolean;
+-  onClick: () => void;
+-};
+-
+-export default function OptionCard({
+-  title,
+-  description,
+-  icon: Icon,
+-  selected,
+-  onClick,
+-}: OptionCardProps) {
+-  return (
+-    <button
+-      type="button"
+-      role="radio"
+-      aria-checked={selected}
+-      onClick={onClick}
+-      className={`
+-        w-full
+-        rounded-2xl
+-        border
+-        p-6
+-        text-left
+-        transition-all
+-        duration-300
+-        hover:scale-[1.02]
+-        hover:border-lime-500
+-        hover:shadow-lg
+-        hover:shadow-lime-500/20
+-        focus:outline-none
+-        focus-visible:ring-2
+-        focus-visible:ring-lime-500
+-        focus-visible:ring-offset-2
+-        focus-visible:ring-offset-zinc-900
+-
+-        ${
+-          selected
+-            ? "border-lime-500 bg-lime-500/10"
+-            : "border-zinc-800 bg-zinc-900"
+-        }
+-      `}
+-    >
+-      <Icon size={32} className="text-lime-500 mb-4" />
+-
+-      <h3 className="text-xl font-semibold text-white">{title}</h3>
+-
+-      <p className="mt-2 text-zinc-400">{description}</p>
+-    </button>
+-  );
+-}
++import { LucideIcon } from "lucide-react";
++
++/**
++ * OptionCard: small reusable selectable card.
++ * - Controlled component (no internal state)
++ * - Accessible (role, aria-checked, focus-visible)
++ */
++
++type OptionCardProps = {
++  title: string;
++  description?: string;
++  icon?: LucideIcon;
++  selected?: boolean;
++  onClick?: () => void;
++  className?: string;
++  disabled?: boolean;
++  iconSize?: number;
++  role?: string;
++};
++
++const baseStyles = "w-full rounded-2xl border p-6 text-left transition-transform duration-200 focus:outline-none";
++const defaultStyles = "border-zinc-800 bg-zinc-900";
++const selectedStyles = "border-lime-500 bg-lime-500/20 scale-[1.02] shadow-[0_8px_30px_rgba(34,197,94,0.06)]";
++const hoverStyles = "hover:scale-[1.02] hover:border-lime-500 hover:shadow-lg hover:shadow-lime-500/20";
++
++export default function OptionCard({
++  title,
++  description,
++  icon: Icon,
++  selected = false,
++  onClick,
++  className,
++  disabled = false,
++  iconSize = 36,
++  role = "radio",
++}: OptionCardProps) {
++  const merged = [
++    baseStyles,
++    "text-left",
++    "focus-visible:ring-2 focus-visible:ring-lime-500 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-900",
++    !disabled ? hoverStyles : "",
++    selected ? selectedStyles : defaultStyles,
++    className ?? "",
++  ]
++    .filter(Boolean)
++    .join(" ");
++
++  return (
++    <button
++      type="button"
++      role={role}
++      aria-checked={selected}
++      aria-disabled={disabled}
++      disabled={disabled}
++      onClick={onClick}
++      className={merged}
++    >
++      {Icon ? <Icon size={iconSize} className="text-lime-500 mb-5" /> : null}
++
++      <h3 className="text-xl font-semibold text-white mb-2">{title}</h3>
++
++      {description ? <p className="mt-0 text-zinc-400">{description}</p> : null}
++    </button>
++  );
++}
+*** End Patch
