@@ -61,39 +61,39 @@ export default function Features() {
   );
 
   return (
-    <section id="features" className="bg-zinc-950 text-white py-24 sm:py-32 px-6 sm:px-8">
+    <section id="features" className="bg-zinc-950 text-white py-16 sm:py-20 px-6 sm:px-8">
       <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-16">
-          <p className="text-lime-400 font-semibold uppercase tracking-[0.3em] text-sm mb-4">
+        <div className="text-center mb-12">
+          <p className="text-lime-400 font-semibold uppercase tracking-[0.25em] text-xs mb-3">
             Características
           </p>
-          <h2 className="text-4xl sm:text-5xl font-bold mb-6">
+          <h2 className="text-3xl sm:text-4xl font-bold mb-4">
             Todo lo que necesitas para tus operaciones
           </h2>
-          <p className="text-lg sm:text-xl text-zinc-400 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-base sm:text-lg text-zinc-400 max-w-2xl mx-auto leading-relaxed">
             Herramientas diseñadas específicamente para la comunidad de Airsoft
           </p>
         </div>
 
         <div
-          className="relative overflow-hidden rounded-3xl border border-zinc-800 bg-zinc-900/50 p-8 sm:p-12 shadow-2xl shadow-black/40"
+          className="relative overflow-hidden rounded-3xl border border-zinc-800 bg-zinc-900/50 p-6 sm:p-8 shadow-2xl shadow-black/40"
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
         >
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 gap-4">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-3">
             <div>
-              <p className="text-sm uppercase tracking-[0.2em] text-lime-400/80 mb-2">
+              <p className="text-xs uppercase tracking-[0.2em] text-lime-400/80 mb-2">
                 {activeIndex + 1} de {features.length}
               </p>
-              <h3 className="text-3xl sm:text-4xl font-semibold">{currentFeature.title}</h3>
+              <h3 className="text-2xl sm:text-3xl font-semibold">{currentFeature.title}</h3>
             </div>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2.5">
               {features.map((feature, index) => (
                 <button
                   key={feature.title}
                   type="button"
                   aria-label={`Ver ${feature.title}`}
-                  className={`h-2.5 w-2.5 rounded-full transition-all duration-300 ${
+                  className={`h-2 w-2 rounded-full transition-all duration-300 ${
                     index === activeIndex ? 'bg-lime-400 scale-125' : 'bg-zinc-700 hover:bg-zinc-600'
                   }`}
                   onClick={() => setActiveIndex(index)}
@@ -102,30 +102,30 @@ export default function Features() {
             </div>
           </div>
 
-          <div className="min-h-[200px] sm:min-h-[240px] flex items-center justify-center">
+          <div className="min-h-[160px] sm:min-h-[180px] flex items-center justify-center">
             <div className="text-center max-w-2xl mx-auto">
-              <div className="mb-8 flex justify-center">
-                <div className="w-20 h-20 rounded-2xl bg-lime-500/10 flex items-center justify-center">
+              <div className="mb-5 flex justify-center">
+                <div className="w-16 h-16 rounded-2xl bg-lime-500/10 flex items-center justify-center">
                   {currentFeature.icon}
                 </div>
               </div>
-              <p className="text-lg sm:text-xl text-zinc-300 leading-relaxed">
+              <p className="text-base sm:text-lg text-zinc-300 leading-relaxed">
                 {currentFeature.description}
               </p>
             </div>
           </div>
 
-          <div className="mt-10 flex justify-center gap-4">
+          <div className="mt-6 flex justify-center gap-3">
             <button
               type="button"
-              className="rounded-full border border-zinc-700 bg-zinc-900/50 px-6 py-3 text-sm font-medium text-white transition-all duration-300 hover:bg-zinc-800 hover:border-zinc-600"
+              className="rounded-full border border-zinc-700 bg-zinc-900/50 px-5 py-2 text-xs font-medium text-white transition-all duration-300 hover:bg-zinc-800 hover:border-zinc-600"
               onClick={() => setActiveIndex((activeIndex - 1 + features.length) % features.length)}
             >
               Anterior
             </button>
             <button
               type="button"
-              className="rounded-full border border-lime-500/30 bg-lime-500/10 px-6 py-3 text-sm font-medium text-lime-400 transition-all duration-300 hover:bg-lime-500/20 hover:border-lime-500/50"
+              className="rounded-full border border-lime-500/30 bg-lime-500/10 px-5 py-2 text-xs font-medium text-lime-400 transition-all duration-300 hover:bg-lime-500/20 hover:border-lime-500/50"
               onClick={() => setActiveIndex((activeIndex + 1) % features.length)}
             >
               Siguiente
