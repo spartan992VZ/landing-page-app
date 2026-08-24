@@ -78,21 +78,21 @@ export default function Hero() {
 
         <div className="flex justify-center items-center lg:justify-end">
 
-          <div className="relative w-[280px] sm:w-[320px] aspect-[9/19] max-h-[580px] rounded-[28px] bg-zinc-900 border-2 border-lime-500/30 shadow-2xl shadow-lime-500/10 overflow-hidden">
+          <div className="relative w-fit h-fit inline-block p-1.5 rounded-[28px] bg-zinc-900 border-2 border-lime-500/30 shadow-2xl shadow-lime-500/10 overflow-hidden">
 
             {images.map((src, i) => (
               <img
                 key={src}
                 src={src}
                 alt={`slide-${i}`}
-                className={`absolute inset-0 w-full h-full object-contain transition-opacity duration-1000 ease-in-out ${
-                  i === index ? "opacity-100" : "opacity-0"
+                className={`block max-h-[70vh] w-auto rounded-[24px] transition-opacity duration-1000 ease-in-out ${
+                  i === index ? "opacity-100" : "opacity-0 absolute inset-0"
                 }`}
                 draggable={false}
               />
             ))}
 
-            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2">
+            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2 z-10">
               {images.map((_, i) => (
                 <button
                   key={i}
