@@ -9,9 +9,9 @@ export interface GoogleFormsConfig {
   entries: {
     role: string;
     frequency: string;
-    painPoint: string;
+    problem: string;
     features: string;
-    engagement: string;
+    interest: string;
     name: string;
     email: string;
     discord: string;
@@ -26,9 +26,9 @@ function validateConfig(): GoogleFormsConfig {
   const actionUrl = process.env.GOOGLE_FORM_ACTION_URL;
   const entryRole = process.env.GOOGLE_FORM_ENTRY_ROLE;
   const entryFrequency = process.env.GOOGLE_FORM_ENTRY_FREQUENCY;
-  const entryPainPoint = process.env.GOOGLE_FORM_ENTRY_PAIN_POINT;
+  const entryProblem = process.env.GOOGLE_FORM_ENTRY_PROBLEM;
   const entryFeatures = process.env.GOOGLE_FORM_ENTRY_FEATURES;
-  const entryEngagement = process.env.GOOGLE_FORM_ENTRY_ENGAGEMENT;
+  const entryInterest = process.env.GOOGLE_FORM_ENTRY_INTEREST;
   const entryName = process.env.GOOGLE_FORM_ENTRY_NAME;
   const entryEmail = process.env.GOOGLE_FORM_ENTRY_EMAIL;
   const entryDiscord = process.env.GOOGLE_FORM_ENTRY_DISCORD;
@@ -42,14 +42,14 @@ function validateConfig(): GoogleFormsConfig {
   if (!entryFrequency) {
     throw new Error('Missing required environment variable: GOOGLE_FORM_ENTRY_FREQUENCY');
   }
-  if (!entryPainPoint) {
-    throw new Error('Missing required environment variable: GOOGLE_FORM_ENTRY_PAIN_POINT');
+  if (!entryProblem) {
+    throw new Error('Missing required environment variable: GOOGLE_FORM_ENTRY_PROBLEM');
   }
   if (!entryFeatures) {
     throw new Error('Missing required environment variable: GOOGLE_FORM_ENTRY_FEATURES');
   }
-  if (!entryEngagement) {
-    throw new Error('Missing required environment variable: GOOGLE_FORM_ENTRY_ENGAGEMENT');
+  if (!entryInterest) {
+    throw new Error('Missing required environment variable: GOOGLE_FORM_ENTRY_INTEREST');
   }
   if (!entryName) {
     throw new Error('Missing required environment variable: GOOGLE_FORM_ENTRY_NAME');
@@ -66,9 +66,9 @@ function validateConfig(): GoogleFormsConfig {
     entries: {
       role: entryRole,
       frequency: entryFrequency,
-      painPoint: entryPainPoint,
+      problem: entryProblem,
       features: entryFeatures,
-      engagement: entryEngagement,
+      interest: entryInterest,
       name: entryName,
       email: entryEmail,
       discord: entryDiscord,

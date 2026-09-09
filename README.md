@@ -36,7 +36,44 @@ npm install
 
 ## Configuración
 
-No se requieren variables de entorno para ejecutar el proyecto en modo desarrollo. El proyecto no utiliza configuración de base de datos ni servicios externos para el funcionamiento básico.
+### Variables de Entorno
+
+El proyecto requiere configuración de variables de entorno para el funcionamiento del formulario de encuesta. Copia el archivo `.env.example` a `.env` y completa los valores:
+
+```bash
+cp .env.example .env
+```
+
+**Variables requeridas para Google Forms:**
+
+- `GOOGLE_FORM_ACTION_URL` - URL de acción del Google Form
+- `GOOGLE_FORM_ENTRY_ROLE` - ID de entrada para el campo de rol
+- `GOOGLE_FORM_ENTRY_FREQUENCY` - ID de entrada para frecuencia de juego
+- `GOOGLE_FORM_ENTRY_PROBLEM` - ID de entrada para problema principal (permite múltiples selecciones)
+- `GOOGLE_FORM_ENTRY_FEATURES` - ID de entrada para funcionalidades deseadas (permite múltiples selecciones)
+- `GOOGLE_FORM_ENTRY_INTEREST` - ID de entrada para nivel de interés
+- `GOOGLE_FORM_ENTRY_NAME` - ID de entrada para nombre
+- `GOOGLE_FORM_ENTRY_EMAIL` - ID de entrada para email
+- `GOOGLE_FORM_ENTRY_DISCORD` - ID de entrada para Discord
+
+**Nota:** Estas variables son server-side only (no usar prefijo `NEXT_PUBLIC_`) por seguridad.
+
+**Variables requeridas para Demos Interactivas:**
+
+- `NEXT_PUBLIC_PLAYER_DEMO_URL` - URL de la demo del mockup Player (app móvil)
+- `NEXT_PUBLIC_ORGANIZER_DEMO_URL` - URL de la demo del mockup Organizer (dashboard)
+
+**Nota:** Estas variables son client-side (usar prefijo `NEXT_PUBLIC_`) para que estén disponibles en el navegador.
+
+### Imágenes Requeridas
+
+El proyecto requiere las siguientes imágenes en la carpeta `public/`:
+
+- `/public/dashboard-preview.png` - Imagen del dashboard organizador para la sección Screenshots
+- `/public/carrusel/appm1.png` a `appm6.png` - Imágenes del carrusel Hero (ya incluidas)
+- `/public/logoapp.png` - Logo de fondo para Hero (ya incluido)
+
+Si no tienes `dashboard-preview.png`, la sección Screenshots mostrará un placeholder.
 
 ## Ejecución
 
@@ -49,6 +86,38 @@ npm run dev
 Abre [http://localhost:3000](http://localhost:3000) en tu navegador para ver la landing page.
 
 Para acceder al formulario de encuesta beta, navega a [http://localhost:3000/beta/survey](http://localhost:3000/beta/survey).
+
+### Desarrollo Local con Demos Interactivas
+
+Para visualizar las demos interactivas en la sección Preview, necesitas ejecutar los proyectos de mockup junto con la landing:
+
+1. **Landing Page**:
+   ```bash
+   npm run dev
+   ```
+   → http://localhost:3000
+
+2. **Player Mock (App Móvil)**:
+   ```bash
+   cd path/to/player-mock
+   PORT=8443 npm run dev
+   ```
+   → http://localhost:8443
+
+3. **Organizer Mock (Dashboard)**:
+   ```bash
+   cd path/to/organizer-mock
+   PORT=8444 npm run dev
+   ```
+   → http://localhost:8444
+
+Configura las URLs en tu archivo `.env`:
+```bash
+NEXT_PUBLIC_PLAYER_DEMO_URL=http://localhost:8443
+NEXT_PUBLIC_ORGANIZER_DEMO_URL=http://localhost:8444
+```
+
+**Nota:** Los proyectos de mockup deben tener configurados los headers `X-Frame-Options: ALLOWALL` y `Content-Security-Policy: frame-ancestors *` en su configuración de servidor para permitir ser embebidos en iframe.
 
 ### Modo producción
 
@@ -84,13 +153,15 @@ airsoft-landing/
 │   │   ├── Features.tsx     # Carrusel de características
 │   │   ├── Why.tsx          # Comparación problema/solución
 │   │   ├── UserTypes.tsx    # Funcionalidades por rol
-│   │   ├── Screenshots.tsx  # Preview de la aplicación (placeholders)
+│   │   ├── Screenshots.tsx  # Preview de la aplicación (demos interactivas)
 │   │   └── Footer.tsx       # Pie de página
 │   ├── beta/
 │   │   └── survey/
 │   │       └── page.tsx     # Página principal del formulario de encuesta
 │   ├── components/
 │   │   ├── CTA.tsx          # Componente de llamada a la acción
+│   │   ├── DemoCard.tsx     # Card para demo interactiva (Player/Organizer)
+│   │   ├── DemoModal.tsx    # Modal para demo ampliada
 │   │   └── survey/          # Componentes reutilizables del formulario
 │   │       ├── QuestionStep.tsx    # Componente base para pasos de encuesta
 │   │       ├── OptionCard.tsx      # Tarjeta de opción seleccionable
@@ -109,6 +180,13 @@ airsoft-landing/
 │   ├── layout.tsx           # Layout raíz de la aplicación
 │   ├── page.tsx             # Página principal (landing page)
 │   └── globals.css          # Estilos globales
+├── lib/
+│   ├── adapters/            # Adaptadores para servicios externos
+│   │   └── googleFormsAdapter.ts  # Adaptador para Google Forms
+│   ├── config/              # Configuración centralizada
+│   │   ├── googleFormsConfig.ts    # Configuración de Google Forms
+│   │   └── demosConfig.ts         # Configuración de demos interactivas
+│   └── types/               # Tipos compartidos
 ├── public/                  # Archivos estáticos
 │   ├── carrusel/           # Imágenes del carrusel del Hero
 │   ├── logo.png            # Logo principal
@@ -201,7 +279,39 @@ Al agregar nuevos pasos a la encuesta:
 ## Despliegue
 
 ### Vercel
-El proyecto está optimizado para despliegue en Vercel. Simplemente conecta tu repositorio y Vercel detectará automáticamente que es un proyecto Next.js.
+
+El proyecto está optimizado para despliegue en Vercel. Sigue estos pasos:
+
+1. **Conecta tu repositorio** a Vercel
+2. **Configura las variables de entorno** en el dashboard de Vercel:
+   - Ve a Settings > Environment Variables
+   - Agrega todas las variables del archivo `.env.example`
+3. **Despliega** - Vercel detectará automáticamente que es un proyecto Next.js
+
+**Variables de entorno en Vercel:**
+- Todas las variables deben agregarse sin el prefijo `NEXT_PUBLIC_`
+- Asegúrate de configurarlas en el entorno de producción
 
 ### Docker
-Ver la sección "Docker" arriba para instrucciones de construcción y ejecución.
+
+El proyecto incluye un `Dockerfile` optimizado para despliegue en contenedores. Para construir y ejecutar:
+
+```bash
+# Construir la imagen
+docker build -t airsoft-landing .
+
+# Ejecutar el contenedor
+docker run -p 3000:3000 --env-file .env airsoft-landing
+```
+
+**Nota:** Asegúrate de pasar el archivo `.env` al contenedor o configurar las variables de entorno en tu plataforma de contenedores.
+
+### Otros proveedores
+
+El proyecto puede desplegarse en cualquier plataforma que soporte Next.js:
+- **Netlify** - Configuración automática
+- **Railway** - Configuración automática
+- **AWS Amplify** - Configuración automática
+- **Render** - Configuración automática
+
+Asegúrate de configurar las variables de entorno en cada plataforma.

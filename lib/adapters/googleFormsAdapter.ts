@@ -16,63 +16,74 @@ export interface GoogleFormsSubmissionResult {
 /**
  * Transforms SurveyData to Google Forms entry format.
  * Maps survey fields to Google Forms entry IDs.
+ * For checkbox fields (problem and features), each option is sent as a separate entry.
  */
 function transformToGoogleFormsFormat(
   data: SurveyData,
   config: GoogleFormsConfig
-): Record<string, string> {
-  const formData: Record<string, string> = {};
+): URLSearchParams {
+  const body = new URLSearchParams();
 
   // Map role
-  formData[config.entries.role] = data.role || '';
+  if (data.role) {
+    body.append(config.entries.role, data.role);
+  }
 
   // Map frequency
-  formData[config.entries.frequency] = data.frequency || '';
+  if (data.frequency) {
+    body.append(config.entries.frequency, data.frequency);
+  }
 
-  // Map pain point
-  formData[config.entries.painPoint] = data.problem || '';
+  // Map problem (checkbox field - multiple entries with same key)
+  if (data.problem && Array.isArray(data.problem)) {
+    data.problem.forEach((value) => {
+      body.append(config.entries.problem, value);
+    });
+  }
 
-  // Map features (array to comma-separated string)
-  formData[config.entries.features] = data.features?.join(', ') || '';
+  // Map features (checkbox field - multiple entries with same key)
+  if (data.features && Array.isArray(data.features)) {
+    data.features.forEach((value) => {
+      body.append(config.entries.features, value);
+    });
+  }
 
-  // Map engagement/interest
-  formData[config.entries.engagement] = data.interest || '';
+  // Map interest
+  if (data.interest) {
+    body.append(config.entries.interest, data.interest);
+  }
 
   // Map beta join data if present
   if (data.betaJoin) {
-    formData[config.entries.name] = data.betaJoin.name || '';
-    formData[config.entries.email] = data.betaJoin.email || '';
-    formData[config.entries.discord] = data.betaJoin.discord || '';
-  } else {
-    formData[config.entries.name] = '';
-    formData[config.entries.email] = '';
-    formData[config.entries.discord] = '';
+    if (data.betaJoin.name) {
+      body.append(config.entries.name, data.betaJoin.name);
+    }
+    if (data.betaJoin.email) {
+      body.append(config.entries.email, data.betaJoin.email);
+    }
+    if (data.betaJoin.discord) {
+      body.append(config.entries.discord, data.betaJoin.discord);
+    }
   }
 
-  return formData;
+  return body;
 }
 
 /**
  * Submits data to Google Forms using the configured action URL.
- * Uses FormData to send the data as a POST request.
+ * Uses URLSearchParams to send the data as a POST request with application/x-www-form-urlencoded.
  */
 async function submitToGoogleForms(
-  formData: Record<string, string>,
+  formData: URLSearchParams,
   config: GoogleFormsConfig
 ): Promise<GoogleFormsSubmissionResult> {
   try {
-    // Create FormData for Google Forms submission
-    const body = new URLSearchParams();
-    Object.entries(formData).forEach(([key, value]) => {
-      body.append(key, value);
-    });
-
     const response = await fetch(config.actionUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
-      body: body.toString(),
+      body: formData.toString(),
       // Note: Google Forms may not support CORS, so we might need to handle this
       // with a no-cors mode or use a different approach in production
       mode: 'no-cors',

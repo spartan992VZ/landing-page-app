@@ -45,7 +45,7 @@ export default function SurveyPage() {
   const [surveyData, setSurveyData] = useState<SurveyData>({
     role: "",
     frequency: undefined,
-    problem: undefined,
+    problem: [],
     features: [],
     interest: undefined,
     betaJoin: {
@@ -54,6 +54,9 @@ export default function SurveyPage() {
       discord: "",
     },
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
 
   const currentStepConfig = stepConfig[currentStep - 1];
 
@@ -65,7 +68,34 @@ export default function SurveyPage() {
   const canContinue = () => {
     if (currentStep === 1) return Boolean(surveyData.role);
     if (currentStep === 2) return Boolean(surveyData.frequency);
+    if (currentStep === 3) return surveyData.problem && surveyData.problem.length > 0;
     return true;
+  };
+
+  const handleSubmit = async (data: SurveyData) => {
+    setIsSubmitting(true);
+    setSubmitError(null);
+
+    try {
+      const response = await fetch('/api/survey', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok) {
+        setSubmitSuccess(true);
+      } else {
+        const errorData = await response.json();
+        setSubmitError(errorData.error || 'Error al enviar el formulario');
+      }
+    } catch (error) {
+      setSubmitError('Error de conexión. Por favor intenta nuevamente.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -126,6 +156,7 @@ export default function SurveyPage() {
 
       {currentStep === 6 && (
         <StepSix
+          surveyData={surveyData}
           name={surveyData.betaJoin?.name ?? ""}
           email={surveyData.betaJoin?.email ?? ""}
           discord={surveyData.betaJoin?.discord ?? ""}
@@ -139,11 +170,55 @@ export default function SurveyPage() {
               },
             });
           }}
-          onSubmit={() => {
-            alert("¡Gracias por unirte a la Beta!\n\nDatos enviados:\n" + JSON.stringify(surveyData, null, 2));
-          }}
+          onSubmit={handleSubmit}
           onBack={() => setCurrentStep((prev) => Math.max(1, prev - 1))}
+          loading={isSubmitting}
         />
+      )}
+
+      {submitSuccess && (
+        <div className="mx-auto w-full max-w-xl px-4 py-6 sm:py-8 text-center">
+          <div className="rounded-2xl bg-zinc-900 border border-lime-500/30 p-8">
+            <div className="w-16 h-16 rounded-full bg-lime-500/20 flex items-center justify-center mx-auto mb-4">
+              <svg className="w-8 h-8 text-lime-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <h2 className="text-2xl font-bold text-white mb-2">
+              ¡Gracias por unirte a la Beta!
+            </h2>
+            <p className="text-zinc-400">
+              Hemos recibido tus datos correctamente. Te contactaremos pronto con más información sobre el lanzamiento.
+            </p>
+          </div>
+        </div>
+      )}
+
+      {submitError && !submitSuccess && (
+        <div className="mx-auto w-full max-w-xl px-4 py-6 sm:py-8 text-center">
+          <div className="rounded-2xl bg-red-900/20 border border-red-500/30 p-8">
+            <div className="w-16 h-16 rounded-full bg-red-500/20 flex items-center justify-center mx-auto mb-4">
+              <svg className="w-8 h-8 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </div>
+            <h2 className="text-2xl font-bold text-white mb-2">
+              Error al enviar
+            </h2>
+            <p className="text-zinc-400 mb-4">
+              {submitError}
+            </p>
+            <button
+              onClick={() => {
+                setSubmitError(null);
+                setCurrentStep(6);
+              }}
+              className="rounded-full bg-lime-500 px-6 py-3 text-sm font-semibold text-black hover:bg-lime-400 transition"
+            >
+              Intentar nuevamente
+            </button>
+          </div>
+        </div>
       )}
     </SurveyLayout>
   );

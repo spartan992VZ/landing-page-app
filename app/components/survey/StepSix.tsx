@@ -1,13 +1,15 @@
 "use client";
 
 import { useState } from "react";
+import { SurveyData } from "@/app/types/survey";
 
 type StepSixProps = {
+  surveyData: SurveyData;
   name?: string;
   email?: string;
   discord?: string;
   onChange: (field: "name" | "email" | "discord", value: string) => void;
-  onSubmit: () => void;
+  onSubmit: (data: SurveyData) => void;
   onBack: () => void;
   loading?: boolean;
 };
@@ -15,6 +17,7 @@ type StepSixProps = {
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export default function StepSix({
+  surveyData,
   name = "",
   email = "",
   discord = "",
@@ -49,7 +52,7 @@ export default function StepSix({
 
   const handleSubmit = () => {
     if (validateEmail(email)) {
-      onSubmit();
+      onSubmit(surveyData);
     }
   };
 

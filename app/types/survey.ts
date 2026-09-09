@@ -13,7 +13,7 @@ export type BetaJoinData = {
 export type SurveyData = {
   role: "player" | "organizer" | "both" | "";
   frequency?: "weekly" | "monthly2" | "monthly1" | "occasional" | "inactive";
-  problem?: SurveyProblemType;
+  problem?: SurveyProblemType[];
   features?: ("find_events" | "manage_events" | "community" | "all_in_one")[];
   interest?: "beta" | "feedback" | "both" | "news";
   betaJoin?: BetaJoinData;
