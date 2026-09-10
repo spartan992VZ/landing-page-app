@@ -7,8 +7,8 @@ import QuestionStep, { QuestionOption } from "./QuestionStep";
 type PainPointType = "find_games" | "coordination" | "community" | "fragmented_information";
 
 type StepThreeProps = {
-  selectedProblem?: PainPointType;
-  onNext: (problem: PainPointType) => void;
+  selectedProblem?: PainPointType[];
+  onNext: (problem: PainPointType[]) => void;
   onBack: () => void;
 };
 
@@ -44,7 +44,7 @@ const painPointOptions: QuestionOption[] = [
 ];
 
 export default function StepThree({ selectedProblem, onNext, onBack }: StepThreeProps) {
-  const [selected, setSelected] = useState<PainPointType | "">(selectedProblem ?? "");
+  const [selected, setSelected] = useState<PainPointType[]>(selectedProblem ?? []);
 
   useEffect(() => {
     if (selectedProblem) {
@@ -53,13 +53,24 @@ export default function StepThree({ selectedProblem, onNext, onBack }: StepThree
   }, [selectedProblem]);
 
   const handleSelect = (value: string) => {
-    setSelected(value as PainPointType);
+    const painPointValue = value as PainPointType;
+    setSelected((prev) => {
+      if (prev.includes(painPointValue)) {
+        return prev.filter((item) => item !== painPointValue);
+      } else {
+        return [...prev, painPointValue];
+      }
+    });
   };
 
   const handleNext = () => {
-    if (selected) {
+    if (selected.length > 0) {
       onNext(selected);
     }
+  };
+
+  const handleSelectionChange = (values: string[]) => {
+    setSelected(values as PainPointType[]);
   };
 
   return (
@@ -67,12 +78,13 @@ export default function StepThree({ selectedProblem, onNext, onBack }: StepThree
       step={3}
       totalSteps={6}
       title="¿Qué es lo que más te cuesta al momento de organizar o participar en una partida?"
-      subtitle="Selecciona la opción que mejor represente tu experiencia."
+      subtitle="Selecciona una o más opciones que representen tu experiencia."
       estimatedTime="2 minutos"
       options={painPointOptions}
-      selectedValue={selected}
+      selectedValues={selected}
+      selectionMode="multiple"
       showBack={true}
-      onSelect={handleSelect}
+      onSelectionChange={handleSelectionChange}
       onBack={onBack}
       onNext={handleNext}
     />

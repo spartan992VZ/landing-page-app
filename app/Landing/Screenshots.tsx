@@ -1,55 +1,57 @@
+'use client';
+
+import { useState } from 'react';
+import DemoCard from '@/app/components/DemoCard';
+import DemoModal from '@/app/components/DemoModal';
+import { getDemosConfig } from '@/lib/config/demosConfig';
+
 export default function Screenshots() {
+  const [activeDemo, setActiveDemo] = useState<'player' | 'organizer' | null>(null);
+  const demosConfig = getDemosConfig();
+
+  const handleOpenPlayer = () => setActiveDemo('player');
+  const handleOpenOrganizer = () => setActiveDemo('organizer');
+  const handleCloseModal = () => setActiveDemo(null);
+
   return (
     <section
       id="screenshots"
-      className="bg-zinc-950 text-white py-24 sm:py-32 px-6 sm:px-8"
+      className="bg-[#0d0d0d] text-white py-16 sm:py-20 px-4"
     >
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-6xl mx-auto">
 
-        <div className="text-center mb-16">
-          <p className="text-lime-400 font-semibold uppercase tracking-[0.3em] text-sm mb-4">
+        <div className="text-center mb-12">
+          <p className="text-[#82c91e] font-semibold uppercase tracking-[0.25em] text-xs mb-3">
             Preview
           </p>
-          <h2 className="text-4xl sm:text-5xl font-bold mb-6">
+          <h2 className="text-3xl sm:text-4xl font-bold mb-4">
             La plataforma en acción
           </h2>
-          <p className="text-lg sm:text-xl text-zinc-400 max-w-2xl mx-auto leading-relaxed">
-            AGREGAR MOCKUP DE LA APLICACIÓN
+          <p className="text-neutral-400 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
+            Descubre cómo funciona la plataforma desde cualquier dispositivo.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
+        <div className="grid md:grid-cols-2 gap-6 lg:gap-8">
+          <DemoCard
+            type="player"
+            url={demosConfig.playerUrl}
+            onOpen={handleOpenPlayer}
+          />
 
-          <div className="rounded-3xl border-2 border-dashed border-zinc-700 bg-zinc-900/50 min-h-[500px] flex flex-col items-center justify-center p-8">
-            <div className="w-20 h-20 rounded-2xl bg-zinc-800 flex items-center justify-center mb-6">
-              <svg className="w-10 h-10 text-zinc-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
-              </svg>
-            </div>
-            <h3 className="text-2xl font-semibold text-zinc-400 mb-3">
-              App Móvil
-            </h3>
-            <p className="text-center text-zinc-500">
-              AGREGAR CAPTURA DE PANTALLA DE LA APP MÓVIL
-            </p>
-          </div>
-
-          <div className="rounded-3xl border-2 border-dashed border-zinc-700 bg-zinc-900/50 min-h-[500px] flex flex-col items-center justify-center p-8">
-            <div className="w-20 h-20 rounded-2xl bg-zinc-800 flex items-center justify-center mb-6">
-              <svg className="w-10 h-10 text-zinc-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-              </svg>
-            </div>
-            <h3 className="text-2xl font-semibold text-zinc-400 mb-3">
-              Dashboard Organizador
-            </h3>
-            <p className="text-center text-zinc-500">
-              AGREGAR CAPTURA DE PANTALLA DEL DASHBOARD
-            </p>
-          </div>
-
+          <DemoCard
+            type="organizer"
+            url={demosConfig.organizerUrl}
+            onOpen={handleOpenOrganizer}
+          />
         </div>
 
+        <DemoModal
+          url={activeDemo === 'player' ? demosConfig.playerUrl : demosConfig.organizerUrl}
+          title={activeDemo === 'player' ? 'App Móvil - Demo Interactiva' : 'Dashboard Organizador - Demo Interactiva'}
+          isOpen={activeDemo !== null}
+          onClose={handleCloseModal}
+        />
       </div>
     </section>
   );

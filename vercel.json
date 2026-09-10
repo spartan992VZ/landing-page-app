@@ -1,0 +1,55 @@
+{
+  "buildCommand": "npm run build",
+  "outputDirectory": ".next",
+  "framework": "nextjs",
+  "regions": ["iad1"],
+  "env": {
+    "GOOGLE_FORM_ACTION_URL": "@google-form-action-url",
+    "GOOGLE_FORM_ENTRY_ROLE": "@google-form-entry-role",
+    "GOOGLE_FORM_ENTRY_FREQUENCY": "@google-form-entry-frequency",
+    "GOOGLE_FORM_ENTRY_PROBLEM": "@google-form-entry-problem",
+    "GOOGLE_FORM_ENTRY_FEATURES": "@google-form-entry-features",
+    "GOOGLE_FORM_ENTRY_INTEREST": "@google-form-entry-interest",
+    "GOOGLE_FORM_ENTRY_NAME": "@google-form-entry-name",
+    "GOOGLE_FORM_ENTRY_EMAIL": "@google-form-entry-email",
+    "GOOGLE_FORM_ENTRY_DISCORD": "@google-form-entry-discord"
+  },
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-XSS-Protection",
+          "value": "1; mode=block"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        }
+      ]
+    },
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, must-revalidate"
+        }
+      ]
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/beta/survey",
+      "destination": "/beta/survey"
+    }
+  ]
+}
