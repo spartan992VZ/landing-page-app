@@ -9,6 +9,7 @@ import StepSix from "@/app/components/survey/StepSix";
 import SurveyLayout from "@/app/components/survey/SurveyLayout";
 import { SurveyData } from "@/app/types/survey";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 const stepConfig = [
   {
@@ -41,6 +42,7 @@ const stepConfig = [
 ];
 
 export default function SurveyPage() {
+  const router = useRouter();
   const [currentStep, setCurrentStep] = useState(1);
   const [surveyData, setSurveyData] = useState<SurveyData>({
     role: "",
@@ -56,7 +58,6 @@ export default function SurveyPage() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
-  const [submitSuccess, setSubmitSuccess] = useState(false);
 
   const currentStepConfig = stepConfig[currentStep - 1];
 
@@ -86,7 +87,8 @@ export default function SurveyPage() {
       });
 
       if (response.ok) {
-        setSubmitSuccess(true);
+        router.push('/');
+        window.scrollTo(0, 0);
       } else {
         const errorData = await response.json();
         setSubmitError(errorData.error || 'Error al enviar el formulario');
@@ -176,25 +178,7 @@ export default function SurveyPage() {
         />
       )}
 
-      {submitSuccess && (
-        <div className="mx-auto w-full max-w-xl px-4 py-6 sm:py-8 text-center">
-          <div className="rounded-2xl bg-zinc-900 border border-lime-500/30 p-8">
-            <div className="w-16 h-16 rounded-full bg-lime-500/20 flex items-center justify-center mx-auto mb-4">
-              <svg className="w-8 h-8 text-lime-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-              </svg>
-            </div>
-            <h2 className="text-2xl font-bold text-white mb-2">
-              ¡Gracias por unirte a la Beta!
-            </h2>
-            <p className="text-zinc-400">
-              Hemos recibido tus datos correctamente. Te contactaremos pronto con más información sobre el lanzamiento.
-            </p>
-          </div>
-        </div>
-      )}
-
-      {submitError && !submitSuccess && (
+      {submitError && (
         <div className="mx-auto w-full max-w-xl px-4 py-6 sm:py-8 text-center">
           <div className="rounded-2xl bg-red-900/20 border border-red-500/30 p-8">
             <div className="w-16 h-16 rounded-full bg-red-500/20 flex items-center justify-center mx-auto mb-4">
