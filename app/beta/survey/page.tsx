@@ -7,9 +7,13 @@ import StepFour from "@/app/components/survey/StepFour";
 import StepFive from "@/app/components/survey/StepFive";
 import StepSix from "@/app/components/survey/StepSix";
 import SurveyLayout from "@/app/components/survey/SurveyLayout";
+import SuccessModal from "@/app/components/survey/SuccessModal";
 import { SurveyData } from "@/app/types/survey";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+
+const SUCCESS_DISPLAY_TIME = 6000;
+const SUCCESS_EXIT_TIME = 300;
 
 const stepConfig = [
   {
@@ -57,7 +61,26 @@ export default function SurveyPage() {
     },
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [isSuccessClosing, setIsSuccessClosing] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!isSuccess) return;
+
+    const closeTimer = window.setTimeout(() => {
+      setIsSuccessClosing(true);
+    }, SUCCESS_DISPLAY_TIME);
+    const redirectTimer = window.setTimeout(() => {
+      router.replace("/");
+      window.scrollTo(0, 0);
+    }, SUCCESS_DISPLAY_TIME + SUCCESS_EXIT_TIME);
+
+    return () => {
+      window.clearTimeout(closeTimer);
+      window.clearTimeout(redirectTimer);
+    };
+  }, [isSuccess, router]);
 
   const currentStepConfig = stepConfig[currentStep - 1];
 
@@ -87,8 +110,7 @@ export default function SurveyPage() {
       });
 
       if (response.ok) {
-        router.push('/');
-        window.scrollTo(0, 0);
+        setIsSuccess(true);
       } else {
         const errorData = await response.json();
         setSubmitError(errorData.error || 'Error al enviar el formulario');
@@ -102,6 +124,7 @@ export default function SurveyPage() {
 
   return (
     <SurveyLayout>
+      <div className={isSuccess ? "hidden" : undefined}>
       {currentStep === 1 && (
         <StepOne
           selectedRole={surveyData.role}
@@ -204,6 +227,9 @@ export default function SurveyPage() {
           </div>
         </div>
       )}
+      </div>
+
+      {isSuccess && <SuccessModal open={!isSuccessClosing} />}
     </SurveyLayout>
   );
 }
