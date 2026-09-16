@@ -5,7 +5,7 @@ export interface DemoConfig {
 
 export function getDemosConfig(): DemoConfig {
   return {
-    playerUrl: process.env.PLAYER_DEMO_URL || '',
-    organizerUrl: process.env.ORGANIZER_DEMO_URL || '',
+    playerUrl: process.env.NEXT_PUBLIC_PLAYER_DEMO_URL || '',
+    organizerUrl: process.env.NEXT_PUBLIC_ADMIN_DEMO_URL || '',
   };
 }
