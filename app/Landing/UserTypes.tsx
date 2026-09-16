@@ -4,95 +4,73 @@ export default function UserTypes() {
   return (
     <section
       id="users"
-      className="bg-[#0d0d0d] text-white py-16 sm:py-20 px-4"
+      className="bg-[#0d0d0d] px-4 py-12 text-white sm:py-16"
     >
-      <div className="max-w-6xl mx-auto">
-
-        <div className="text-center mb-12">
-          <p className="text-[#82c91e] font-semibold uppercase tracking-[0.25em] text-xs mb-3">
+      <div className="mx-auto max-w-6xl">
+        <div className="mb-10 text-center sm:mb-12">
+          <p className="mb-2 text-xs font-semibold uppercase tracking-[0.25em] text-[#82c91e]">
             PARA QUIÉN ES
           </p>
-          <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+          <h2 className="mb-3 text-2xl font-bold sm:text-3xl">
             Una plataforma, tres comunidades
           </h2>
-          <p className="text-neutral-400 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
-            Cada rol tiene lo que necesita. Todos en el mismo lugar.
+          <p className="mx-auto max-w-2xl text-base leading-relaxed text-neutral-400">
+            Una idea pensada para conectar a toda la comunidad de Airsoft.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-0">
-
-          <div className="md:border-r border-neutral-800 md:pr-8 md:last:border-r-0 transition-transform hover:scale-105">
-            <div className="mb-4">
-              <User className="w-8 h-8 text-[#82c91e] mb-4" />
-              <h3 className="text-xl font-bold text-white mb-4">
+        <div className="grid grid-cols-1 gap-y-10 md:grid-cols-2 md:gap-x-8 lg:grid-cols-3 lg:gap-x-0 lg:gap-y-0">
+          <div className="group border-neutral-800 md:pr-8 lg:border-r">
+            <div className="mb-5 transition-transform duration-300 group-hover:-translate-y-0.5">
+              <User className="mb-3 h-7 w-7 text-[#82c91e] transition-colors duration-300 group-hover:text-lime-300" />
+              <h3 className="text-lg font-bold text-white transition-colors duration-300 group-hover:text-lime-300">
                 Jugadores
               </h3>
+              <p className="mt-2 text-sm leading-relaxed text-neutral-500">
+                Para quienes quieren encontrar y compartir partidas.
+              </p>
             </div>
-            <ul className="space-y-3">
-              <li className="text-neutral-300 text-sm">
-                Encontrá partidas y campos cerca de ti
-              </li>
-              <li className="text-neutral-300 text-sm">
-                Unité a equipos y escuadrones
-              </li>
-              <li className="text-neutral-300 text-sm">
-                Chat y anuncios por evento
-              </li>
-              <li className="text-neutral-300 text-sm">
-                Estadísticas, historial y ranking
-              </li>
+            <ul className="space-y-2.5">
+              <li className="text-sm text-neutral-300">Encontrá partidas y campos cerca de vos</li>
+              <li className="text-sm text-neutral-300">Unite a equipos y comunidades</li>
+              <li className="text-sm text-neutral-300">Coordiná y comunicáte por evento</li>
             </ul>
           </div>
 
-          <div className="md:border-r border-neutral-800 md:px-8 md:last:border-r-0 transition-transform hover:scale-105">
-            <div className="mb-4">
-              <Clipboard className="w-8 h-8 text-[#82c91e] mb-4" />
-              <h3 className="text-xl font-bold text-white mb-4">
+          <div className="group border-neutral-800 md:pl-8 lg:border-r lg:px-8">
+            <div className="mb-5 transition-transform duration-300 group-hover:-translate-y-0.5">
+              <Clipboard className="mb-3 h-7 w-7 text-[#82c91e] transition-colors duration-300 group-hover:text-lime-300" />
+              <h3 className="text-lg font-bold text-white transition-colors duration-300 group-hover:text-lime-300">
                 Organizadores
               </h3>
+              <p className="mt-2 text-sm leading-relaxed text-neutral-500">
+                Para quienes crean y coordinan experiencias de juego.
+              </p>
             </div>
-            <ul className="space-y-3">
-              <li className="text-neutral-300 text-sm">
-                Creá y publicá eventos fácilmente
-              </li>
-              <li className="text-neutral-300 text-sm">
-                Gestioná asistentes, inscripciones y pagos
-              </li>
-              <li className="text-neutral-300 text-sm">
-                Armá equipos y lados de partida
-              </li>
-              <li className="text-neutral-300 text-sm">
-                Reportes y analíticas de asistencia
-              </li>
+            <ul className="space-y-2.5">
+              <li className="text-sm text-neutral-300">Creá y publicá eventos</li>
+              <li className="text-sm text-neutral-300">Gestioná asistentes e inscripciones</li>
+              <li className="text-sm text-neutral-300">Coordiná jugadores, equipos y partidas</li>
             </ul>
           </div>
 
-          <div className="md:pl-8 transition-transform hover:scale-105">
-            <div className="mb-4">
-              <MapPin className="w-8 h-8 text-[#82c91e] mb-4" />
-              <h3 className="text-xl font-bold text-white mb-4">
-                Dueños de campos
+          <div className="group md:col-span-2 md:pt-8 lg:col-span-1 lg:pl-8 lg:pt-0">
+            <div className="mb-5 transition-transform duration-300 group-hover:-translate-y-0.5">
+              <MapPin className="mb-3 h-7 w-7 text-[#82c91e] transition-colors duration-300 group-hover:text-lime-300" />
+              <h3 className="text-lg font-bold text-white transition-colors duration-300 group-hover:text-lime-300">
+                Campos e instalaciones
               </h3>
+              <p className="mt-2 text-sm leading-relaxed text-neutral-500">
+                Para quienes gestionan espacios de juego.
+              </p>
             </div>
-            <ul className="space-y-3">
-              <li className="text-neutral-300 text-sm">
-                Publicá y destacá tu campo
-              </li>
-              <li className="text-neutral-300 text-sm">
-                Gestioná disponibilidad, turnos y reservas
-              </li>
-              <li className="text-neutral-300 text-sm">
-                Recibí más jugadores y organizadores
-              </li>
-              <li className="text-neutral-300 text-sm">
-                Administrá reglas, servicios y alquileres
-              </li>
+            <ul className="space-y-2.5">
+              <li className="text-sm text-neutral-300">Publicá tu campo y disponibilidad</li>
+              <li className="text-sm text-neutral-300">Gestioná horarios y reservas</li>
+              <li className="text-sm text-neutral-300">Conectá con organizadores y jugadores</li>
             </ul>
           </div>
-
         </div>
-
       </div>
     </section>
   );
