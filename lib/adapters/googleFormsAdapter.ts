@@ -66,6 +66,10 @@ function transformToGoogleFormsFormat(
     }
   }
 
+  if (data.suggestion?.trim()) {
+    body.append(config.entries.suggestion, data.suggestion);
+  }
+
   return body;
 }
 

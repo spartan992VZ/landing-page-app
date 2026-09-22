@@ -99,6 +99,7 @@ El endpoint requiere las siguientes variables de entorno configuradas en el serv
 - `GOOGLE_FORM_ENTRY_NAME` - ID de entrada para nombre
 - `GOOGLE_FORM_ENTRY_EMAIL` - ID de entrada para email
 - `GOOGLE_FORM_ENTRY_DISCORD` - ID de entrada para Discord
+- `GOOGLE_FORM_ENTRY_SUGGESTION` - ID de entrada para sugerencias o comentarios opcionales
 
 ### Seguridad
 

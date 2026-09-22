@@ -15,6 +15,7 @@ export interface GoogleFormsConfig {
     name: string;
     email: string;
     discord: string;
+    suggestion: string;
   };
 }
 
@@ -32,6 +33,7 @@ function validateConfig(): GoogleFormsConfig {
   const entryName = process.env.GOOGLE_FORM_ENTRY_NAME;
   const entryEmail = process.env.GOOGLE_FORM_ENTRY_EMAIL;
   const entryDiscord = process.env.GOOGLE_FORM_ENTRY_DISCORD;
+  const entrySuggestion = process.env.GOOGLE_FORM_ENTRY_SUGGESTION;
 
   if (!actionUrl) {
     throw new Error('Missing required environment variable: GOOGLE_FORM_ACTION_URL');
@@ -60,6 +62,9 @@ function validateConfig(): GoogleFormsConfig {
   if (!entryDiscord) {
     throw new Error('Missing required environment variable: GOOGLE_FORM_ENTRY_DISCORD');
   }
+  if (!entrySuggestion) {
+    throw new Error('Missing required environment variable: GOOGLE_FORM_ENTRY_SUGGESTION');
+  }
 
   return {
     actionUrl,
@@ -72,6 +77,7 @@ function validateConfig(): GoogleFormsConfig {
       name: entryName,
       email: entryEmail,
       discord: entryDiscord,
+      suggestion: entrySuggestion,
     },
   };
 }
