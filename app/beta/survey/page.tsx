@@ -185,7 +185,13 @@ export default function SurveyPage() {
           name={surveyData.betaJoin?.name ?? ""}
           email={surveyData.betaJoin?.email ?? ""}
           discord={surveyData.betaJoin?.discord ?? ""}
+          suggestion={surveyData.suggestion ?? ""}
           onChange={(field, value) => {
+            if (field === "suggestion") {
+              updateSurvey({ suggestion: value });
+              return;
+            }
+
             updateSurvey({
               betaJoin: {
                 name: surveyData.betaJoin?.name ?? "",

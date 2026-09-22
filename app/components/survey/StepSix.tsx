@@ -8,7 +8,8 @@ type StepSixProps = {
   name?: string;
   email?: string;
   discord?: string;
-  onChange: (field: "name" | "email" | "discord", value: string) => void;
+  suggestion?: string;
+  onChange: (field: "name" | "email" | "discord" | "suggestion", value: string) => void;
   onSubmit: (data: SurveyData) => void;
   onBack: () => void;
   loading?: boolean;
@@ -21,6 +22,7 @@ export default function StepSix({
   name = "",
   email = "",
   discord = "",
+  suggestion = "",
   onChange,
   onSubmit,
   onBack,
@@ -125,6 +127,22 @@ export default function StepSix({
             <p className="text-sm text-zinc-500">
               Opcional. Puede servirnos para contactarte durante las pruebas de la Beta.
             </p>
+          </div>
+
+          <div className="space-y-2">
+            <label htmlFor="suggestion" className="block text-sm font-medium text-zinc-300">
+              ¿Hay algo más que quieras contarnos?
+            </label>
+            <textarea
+              id="suggestion"
+              value={suggestion}
+              onChange={(e) => onChange("suggestion", e.target.value)}
+              placeholder="Podés contarnos una idea, sugerencia, problema o algo que te gustaría encontrar en Airsoft..."
+              maxLength={1000}
+              rows={5}
+              className="w-full resize-y rounded-2xl border border-zinc-700 bg-black px-4 py-3 text-white outline-none transition placeholder:text-zinc-600 hover:border-zinc-600 focus:border-lime-500 focus-visible:ring-2 focus-visible:ring-lime-500/50"
+            />
+            <p className="text-sm text-zinc-500">Este campo es opcional.</p>
           </div>
 
           <div className="flex flex-col gap-3 sm:flex-row">

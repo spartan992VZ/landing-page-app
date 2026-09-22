@@ -17,4 +17,5 @@ export type SurveyData = {
   features?: ("find_events" | "manage_events" | "community" | "all_in_one")[];
   interest?: "beta" | "feedback" | "both" | "news";
   betaJoin?: BetaJoinData;
+  suggestion?: string;
 };
